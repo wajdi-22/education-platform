@@ -21,11 +21,35 @@ def dashboard(request):
     return render(request,'blog.html')
 
 def test_auth(request):
-    if request.user.student:
-        return redirect('dashboard')
-    else:
+    try:
+        teacher=request.user.teacher
+        return redirect('teacher')
+    except:
+        pass
+    try:
+        student=request.user.student
+        return redirect('student')
+
+    except:
+        pass
+    try:
+        parent=request.user.parent
+        return redirect('parent')
+    except:
         pass
     return redirect('index')
+
+
+def teacher(request):
+    return HttpResponse(request.user.teacher.__str__())
+
+
+def student(request):
+    return HttpResponse(request.user.student.__str__())
+
+
+def parent(request):
+    return HttpResponse(request.user.parent.__str__())
 
 
 def posts_page(request):
