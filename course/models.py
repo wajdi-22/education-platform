@@ -10,7 +10,7 @@ class Level(models.Model):
 
 
     def __str__(self):
-        return self.number
+        return f'Level :{self.number}'
 
 class Avatar(models.Model):
     score=models.IntegerField(default=0)
@@ -22,14 +22,13 @@ class Learning_Style(Enum):
     AUDITORY = 2
     READ_WRITE = 3
 
-class student(models.Model):
+class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     avatar= models.OneToOneField(Avatar,on_delete=models.CASCADE)
     learning_style = models.IntegerField(choices=[(style.value, style.name) for style in Learning_Style])
     score = models.IntegerField(default=0)
     playtime = models.IntegerField(default=0)
-    parent_email = models.CharField(max_length=50)
 
     def __str__(self):
         return f'{self.user.first_name} role: student'
@@ -37,7 +36,7 @@ class student(models.Model):
 
 class Parent(models.Model):
     user= models.OneToOneField(User, on_delete=models.CASCADE)
-    kid=models.OneToOneField(student,on_delete=models.CASCADE)
+    kid=models.OneToOneField(Student,on_delete=models.CASCADE)
     phone_number=models.CharField(max_length=8)
 
 
@@ -51,17 +50,17 @@ class Parent(models.Model):
 
 class Subject(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    # description = models.TextField()
     level = models.ForeignKey(Level,on_delete=models.CASCADE)
 
 
     def __str__(self):
         return f'{self.level.__str__()} -- {self.name} '
 
-class teacher(models.Model):
+class Teacher(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     subjects = models.ManyToManyField(Subject)
-    level= models.ForeignKey(Level,on_delete=models.CASCADE)
+    # level= models.ForeignKey(Level,on_delete=models.CASCADE)
 
     def __str__(self):
         return f' {self.user.first_name} role: teacher'

@@ -13,15 +13,15 @@ def index(request):
     return render(request, 'course/index.html')
 
 
-def login(request):
-    x=x/0
-    return None
+# def login(request):
+#
+#     return None
 
 def dashboard(request):
     return render(request,'blog.html')
 
 def test_auth(request):
-    if request.user.is_superuser:
+    if request.user.student:
         return redirect('dashboard')
     else:
         pass
