@@ -1,5 +1,5 @@
 from enum import Enum
-
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.db import models
 from django.forms import ModelForm
@@ -71,16 +71,6 @@ class Teacher(models.Model):
 
 
 
-
-
-
-
-
-
-
-
-
-
 class Chapter(models.Model):
     name = models.CharField(max_length=255)
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
@@ -92,9 +82,16 @@ class CourseMaterial(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     summary = models.TextField()
-    audio = models.FileField(upload_to='audio/', null=True, blank=True)
-    summary_audio = models.FileField(upload_to='audio/summaries/', null=True, blank=True)
+    audio = models.FileField(upload_to='course/static/audio/', null=True, blank=True)
+    summary_audio = models.FileField(upload_to='course/static/audio/summaries/', null=True, blank=True)
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=255, unique=True, null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
