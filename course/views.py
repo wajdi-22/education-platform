@@ -57,8 +57,7 @@ def parent(request):
     return HttpResponse(request.user.parent.__str__())
 
 
-def add_course(request):
-    return None
+
 
 
 def list_courses(request):
@@ -104,6 +103,7 @@ def view_course_material(request, level, subject, chapter, slug):
 
 @csrf_exempt
 def add_course_material(request):
+
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
@@ -150,4 +150,8 @@ def add_course_material(request):
         return redirect('course_material_detail', pk=course_material.pk)
 
     else:
-        return render(request, 'add_course_material.html')
+        return render(request, 'course/teacher/add_course_material_teacher.html',{'first_name': request.user.first_name,
+                                                                                  'full_name': request.user.get_full_name(), 'role': 'Teacher'})
+
+
+
