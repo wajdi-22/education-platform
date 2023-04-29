@@ -57,6 +57,44 @@ def parent(request):
     return HttpResponse(request.user.parent.__str__())
 
 
+def list_courses_student(request):
+    level = request.user.student.level
+    subjects = Subject.objects.filter(level=level)
+    return render(request,'course/student/list_courses_student.html',
+                  {'subjects':subjects,'first_name':request.user.first_name,
+                   'full_name':request.user.get_full_name(),'role':'student'})
+
+def list_chapters_student(request,level,subject):
+    sub = Subject.objects.get(Q(name=subject) & Q(level=Level.objects.get(number=level)))
+    chapters = Chapter.objects.filter(subject=sub)
+    return render(request, 'course/student/list_chapters_student.html',
+                  {'chapters': chapters, 'subject': sub.__str__(), 'first_name': request.user.first_name,
+                   'full_name': request.user.get_full_name(), 'role': 'Student'})
+
+def list_course_material_student(request, level, subject, chapter):
+    sub = Subject.objects.get(Q(name=subject) & Q(level=Level.objects.get(number=level)))
+    chapterr = Chapter.objects.get(Q(subject=sub) & Q(name=chapter))
+    course_material = CourseMaterial.objects.filter(chapter=chapterr)
+    # print(course_material)
+    return render(request, 'course/student/list_course_material_student.html',
+                  {'course_material': course_material, 'subject': sub, 'chapter': chapterr,
+                   'first_name': request.user.first_name,
+                   'full_name': request.user.get_full_name(), 'role': 'Student'})
+
+def view_course_material_student(request, level, subject, chapter, slug):
+    course_material = CourseMaterial.objects.get(slug=slug)
+    audiofile=course_material.audio.url
+    audiofile=audiofile.replace('course/static/','')
+    summaries_audio=course_material.summary_audio.url
+    summaries_audio = summaries_audio.replace('course/static/', '')
+    sub = Subject.objects.get(Q(name=subject) & Q(level=Level.objects.get(number=level)))
+    chapterr = Chapter.objects.get(Q(subject=sub) & Q(name=chapter))
+    return render(request, 'course/student/view_course_material_student.html',
+                  {'course_material': course_material,'summaries_audio':summaries_audio,'audiofile':audiofile, 'subject': sub, 'chapter': chapterr,
+                   'first_name': request.user.first_name,
+                   'full_name': request.user.get_full_name(), 'role': 'Student'})
+
+
 
 
 

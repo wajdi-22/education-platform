@@ -11,8 +11,14 @@ urlpatterns = [
     path("teacher/course/add",views.add_course_material,name='add_course_material'),
 
     path("student/",views.student,name='student'),
+    path("student/courses", views.list_courses_student, name='list_courses_student'),
+    path("student/courses/<int:level>/<str:subject>", views.list_chapters_student, name='list_chpters_student'),
+    path("student/courses/<int:level>/<str:subject>/<str:chapter>", views.list_course_material_student,name='list_course_material_student'),
+    path("student/courses/<int:level>/<str:subject>/<str:chapter>/<slug:slug>", views.view_course_material_student,name='view_course_material_student'),
+
     path("parent/",views.parent,name='parent'),
     path('test_auth', views.test_auth),
+
 
 
 ]
