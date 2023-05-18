@@ -1,0 +1,44 @@
+{% extends 'course/student/base_student.html' %}
+{% load static %}
+{% block content %}
+
+
+
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <h1>{{ course_material.title }}</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/student/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/student/courses">Courses</a></li>
+                    <li class="breadcrumb-item"><a
+                            href="/teacher/courses/{{ subject.level.number }}/{{ subject.name }}">{{ subject }}</a></li>
+                    <li class="breadcrumb-item"><a
+                            href="/teacher/courses/{{ subject.level.number }}/{{ subject.name }}/{{ chapter.name }}">{{ chapter.name }}</a>
+                    </li>
+                    <li class="breadcrumb-item active">{{ course_material.title }}</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <h1>{{ course_material.title }}</h1>
+        <p>{% if course_material.audio %}
+            <audio controls>
+                <source src={% static audiofile %} type="{{ course_material.audio.content_type }}">
+            </audio>
+        {% endif %}
+            {{ course_material.content }}</p>
+
+        <h2>summary</h2>
+        <p>{% if course_material.summary_audio %}
+            <audio controls>
+                <source src="{% static summaries_audio %}" type="{{ course_material.summary_audio.content_type }}">
+            </audio>
+        {% endif %}{{ course_material.summary }}</p>
+
+
+    </main>
+
+
+
+
+{% endblock %}
